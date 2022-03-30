@@ -1,6 +1,6 @@
 ###
 # List of products
-GET http://127.0.0.1:3000/products
+GET https://nodejs-esgi-server.herokuapp.com
 
 ###
 # One product
