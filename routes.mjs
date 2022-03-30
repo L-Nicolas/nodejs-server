@@ -43,7 +43,12 @@ rootPdt.get('/products/:name', (req, res) => {
  */
 rootPdt.post('/products/add', (req, res) => {
     const { name, quantity } = req.body;
-    res.status(200).send(add(name, quantity));
+    if (quantity > 10) {
+        res.status(400).send(`Quantité trop grande, veuillez rentrer une quantité inférieure à 10`);
+    } else {
+        res.status(200).send(add(name, quantity));
+    }
+
     console.log(req.body);
 
     /* if (Object.keys(req.body).length === 0) {

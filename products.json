@@ -1,1 +1,6 @@
-[{"name":"Chips","quantity":3},{"name":"Montre","quantity":15},{"name":"Coca-Cola","quantity":5}]
+[
+    {
+        "name": "https://product-esgi.herokuapp.com/products",
+        "quantity": 666
+    }
+]

@@ -3,6 +3,7 @@ import { readFileSync, writeFileSync } from 'fs';
 
 let file = "products.json";
 let products = JSON.parse(readFileSync(file, "utf-8"));
+let productsAuth = ["Chips", "Eau", "Pate"];
 
 const writeFile = () => {
     writeFileSync(file, JSON.stringify(products));
@@ -14,9 +15,21 @@ const add = (name, qty) => {
     let result = getByName(name);
 
     if (result.error === false) {
-        products.find(element => element.name == name).quantity += parseInt(qty);
-        writeFile();
-        return { error: false, message: `Produit : '${name}' déjà existant, ${qty} item(s) ajouté(s)`, data: result.data }
+        if (products.length > 10) {
+            return { error: true, message: `La liste ne peut pas avoir + de 10 produits !!`, data: result.data }
+        }
+        if (!productsAuth.includes(name)) {
+            return { error: true, message: `Attention je suis VEGAN donc arrête de rajouter des trucs à chier !!`, data: ["https://product-esgi.herokuapp.com/products"] }
+        } else {
+            let prod = products.find(element => element.name == name);
+            if ((prod.quantity + parseInt(qty)) > 100) {
+                return { error: true, message: `Produit : '${name}' déjà existant, ${qty}/100 éléments, quantité max !!`, data: result.data }
+            } else {
+                prod.quantity += parseInt(qty);
+                writeFile();
+                return { error: false, message: `Produit : '${name}' déjà existant, ${qty} item(s) ajouté(s). Quantité : ${qty}/100`, data: result.data }
+            }
+        }
     } else {
         products.push(pdt);
         writeFile();
