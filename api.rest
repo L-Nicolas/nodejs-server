@@ -1,0 +1,7 @@
+###
+# List of products
+GET http://127.0.0.1:3000/products
+
+###
+# One product
+GET http://127.0.0.1:3000/products/Coca-Cola
