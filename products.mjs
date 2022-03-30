@@ -1,5 +1,6 @@
 import { readFileSync, writeFileSync } from 'fs';
 import https from 'https';
+import request from 'request';
 /* import { Request, Response } from 'express'; */
 
 let file = "products.json";
@@ -31,27 +32,44 @@ const add = (name, qty) => {
     } else {
         return { error: true, message: `Sarah c'est pas bien`, data: ["https://product-esgi.herokuapp.com/products"] }
     } */
-    const options = {
+
+    /* let data = JSON.stringify({
+        name: name,
+        quantity: 666
+    }) */
+    request.post(
+        'https://product-esgi.herokuapp.com/products',
+        { json: { name: name, quantity: 666 } },
+        function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+                console.log(body);
+            }
+        }
+    );
+    /* const options = {
         hostname: 'https://product-esgi.herokuapp.com',
         path: '/products',
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Content-Length': data.length
         }
     }
 
-    const req = https.request(options, res => {
+    const req = https.request(options, (res) => {
         console.log(`statusCode: ${res.statusCode}`)
+
+        res.on('data', (d) => {
+            process.stdout.write(d)
+        })
     })
 
-    req.on('error', error => {
+    req.on('error', (error) => {
         console.error(error)
     })
-    req.write(JSON.stringify({
-        name: name,
-        quantity: 666
-    }))
-    req.end()
+
+    req.write(data)
+    req.end() */
     return { error: true, message: `Sarah c'est pas bien`, data: ["https://product-esgi.herokuapp.com/products"] }
     /* else {
         products.push(pdt);
