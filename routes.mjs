@@ -1,7 +1,13 @@
 import { Router } from 'express';
 import { add, getAll, update, remove, getByName } from "./products.mjs";
+
 const rootPdt = Router();
 
+/**
+ * Récupération de l'ensemble des produits
+ * 
+ * @returns {JSON}
+ */
 rootPdt.get('/products', (req, res) => {
     let products = getAll();
 
@@ -12,6 +18,12 @@ rootPdt.get('/products', (req, res) => {
     }
 });
 
+/**
+ * Récupération d'un produit selon son nom
+ * @param {String} n : name
+ * 
+ * @returns {JSON}
+ */
 rootPdt.get('/products/:name', (req, res) => {
     let result = getByName(req.params.name);
 
@@ -22,6 +34,13 @@ rootPdt.get('/products/:name', (req, res) => {
     }
 });
 
+/**
+ * Ajout d'un produit
+ * @param {String} n : name
+ * @param {Int} q : quantity
+ * 
+ * @returns {JSON}
+ */
 rootPdt.post('/products/add', (req, res) => {
     const { name, quantity } = req.body;
     res.status(200).send(add(name, quantity));
@@ -55,11 +74,32 @@ rootPdt.post('/products/add', (req, res) => {
     } */
 });
 
-rootPdt.delete('/products/:name&:quantity', (req, res) => {
-    const { name, quantity } = req.params;
+/**
+ * Suppression d'une quantité de produit 
+ * @param {String} n : name
+ * @param {Int} [q : quantity]
+ * 
+ * @returns {JSON}
+ * 
+ * @depracated
+ */
+rootPdt.delete('/products/:name', (req, res) => {
+    const { name } = req.params;
+    const quantity = req.query.quantity ?? 1;
+
     let result = remove(name, quantity);
 
     res.status(result.code).send(result);
 });
+
+/* Suppression d'une quantité de produit */
+/* rootPdt.update('/products/:name', (req, res) => {
+    const { name } = req.params;
+    const { quantity } = req.query;
+
+    let result = remove(name, quantity);
+
+    res.status(result.code).send(result);
+}); */
 
 export default rootPdt;
