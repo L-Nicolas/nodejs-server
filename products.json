@@ -1,1 +1,6 @@
-[{"name":"Chips","quantity":3},{"name":"Coca coca","quantity":2},{"name":"Coca-coca","quantity":2}]
+[
+    {
+        "name": "Chips",
+        "quantity": 1
+    }
+]

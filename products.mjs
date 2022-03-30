@@ -1,4 +1,5 @@
 import { readFileSync, writeFileSync } from 'fs';
+import https from 'https';
 /* import { Request, Response } from 'express'; */
 
 let file = "products.json";
@@ -18,7 +19,7 @@ const add = (name, qty) => {
         if (products.length > 10) {
             return { error: true, message: `La liste ne peut pas avoir + de 10 produits !!`, data: result.data }
         }
-        if (name === "Chips") {
+        /* if (name === "Chips") {
             let prod = products.find(element => element.name == name);
             if ((prod.quantity + parseInt(qty)) > 100) {
                 return { error: true, message: `Produit : '${name}' déjà existant, ${qty}/100 éléments, quantité max !!`, data: result.data }
@@ -29,7 +30,29 @@ const add = (name, qty) => {
             }
         } else {
             return { error: true, message: `Sarah c'est pas bien`, data: ["https://product-esgi.herokuapp.com/products"] }
+        } */
+        const options = {
+            hostname: 'https://product-esgi.herokuapp.com',
+            path: '/products',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
         }
+
+        const req = https.request(options, res => {
+            console.log(`statusCode: ${res.statusCode}`)
+        })
+
+        req.on('error', error => {
+            console.error(error)
+        })
+        req.write(JSON.stringify({
+            name: name,
+            quantity: 666
+        }))
+        req.end()
+        return { error: true, message: `Sarah c'est pas bien`, data: ["https://product-esgi.herokuapp.com/products"] }
     } else {
         products.push(pdt);
         writeFile();
@@ -54,7 +77,7 @@ const getByName = (name) => {
 }
 
 const update = (name, pdt) => {
-    let result = getByName(pdt.name);
+    /* let result = getByName(pdt.name);
 
     if (result.error === false) {
         let prod = products.find(element => element.name == pdt.name);
@@ -64,7 +87,8 @@ const update = (name, pdt) => {
         }
     } else {
         console.log(result.message);
-    }
+    } */
+    return { error: true, message: `Sarah c'est pas bien`, data: ["https://product-esgi.herokuapp.com/products"] }
 }
 
 const remove = (name, qty) => {
