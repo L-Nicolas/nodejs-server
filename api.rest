@@ -5,3 +5,17 @@ GET http://127.0.0.1:3000/products
 ###
 # One product
 GET http://127.0.0.1:3000/products/Coca-Cola
+
+###
+# Add product
+POST http://127.0.0.1:3000/products/add
+content-type: application/json
+
+{
+    "name": "Coca-Cola",
+    "quantity": 3
+}
+
+###
+# Delete product
+DELETE http://127.0.0.1:3000/products/Coca-Cola&3

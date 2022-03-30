@@ -12,10 +12,15 @@ const writeFile = () => {
 const add = (name, qty) => {
     let pdt = { "name": name, "quantity": qty };
     let result = getByName(name);
+
     if (result.error === false) {
-        console.log(result.message);
+        products.find(element => element.name == name).quantity += parseInt(qty);
+        writeFile();
+        return { error: false, message: `Produit : '${name}' déjà existant, ${qty} item(s) ajouté(s)`, data: result.data }
     } else {
         products.push(pdt);
+        writeFile();
+        return { error: false, message: `Produit : '${name}' ajouté`, data: [] }
     }
 }
 
@@ -55,14 +60,18 @@ const remove = (name, qty) => {
     if (result.error === false) {
         if (result.data.quantity <= qty) {
             products = products.filter((e) => e.name != name);
-            console.log(`Produit : '${name}' supprimé`);
+            writeFile();
+            return { code: 200, error: false, message: `Produit : '${name}' supprimé`, data: [] }
         } else {
             result.data.quantity -= qty;
-            console.log(`Produit : '${name}', quantité modifié, ${qty} élément(s) retiré(s)`)
+            writeFile();
+            return { code: 200, error: false, message: `Produit : '${name}' modifié, ${qty} élément(s) retiré(s). Quantité restante : ${result.data.quantity}`, data: [] }
         }
     } else {
         console.log(result.message);
+        result.code = 404;
+        return result;
     }
 }
 
-export { add, getAll, update, remove, writeFile, getByName };
+export { add, getAll, update, remove, getByName };
