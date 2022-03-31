@@ -1,0 +1,49 @@
+### Requête sur heroku ###
+
+###
+# List of products
+GET https://nodejs-esgi-server.herokuapp.com/products
+
+###
+# One product
+GET https://nodejs-esgi-server.herokuapp.com/products/Coca
+
+###
+# Add product
+POST https://nodejs-esgi-server.herokuapp.com/products
+content-type: application/json
+
+{
+    "name": "Coca-coca",
+    "quantity": 2
+}
+
+###
+# Delete product
+DELETE https://nodejs-esgi-server.herokuapp.com/products/Chips?quantity=2
+
+
+
+### Requête en local ###
+
+###
+# List of products
+GET http://127.0.0.1:3000/products
+
+###
+# One product
+GET http://127.0.0.1:3000/products/Coca
+
+###
+# Add product
+POST http://127.0.0.1:3000/products
+content-type: application/json
+
+{
+    "name": "riz",
+    "quantity": 3
+}
+
+###
+# Delete product
+DELETE http://127.0.0.1:3000/products/chips?quantity=2

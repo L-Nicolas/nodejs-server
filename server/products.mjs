@@ -5,7 +5,7 @@ import request from 'request';
 
 let file = "products.json";
 let products = JSON.parse(readFileSync(file, "utf-8"));
-let productsAuth = ["Chips", "Eau", "Pate"];
+let productsAuth = ["chips", "eau", "pate", "fromage", "jus", "riz"];
 
 const writeFile = () => {
     writeFileSync(file, JSON.stringify(products));
@@ -13,31 +13,46 @@ const writeFile = () => {
 }
 
 const add = (name, qty) => {
+    name = name.toLowerCase();
+    name = name.replace(/\W/gm, "-");
+
     let pdt = { "name": name, "quantity": qty };
-    let result = getByName(name);
+    let retour = { error: true, message: `Problème lors de l'insertion`, data: [] };
 
-    //if (result.error === false) {
     if (products.length > 10) {
-        return { error: true, message: `La liste ne peut pas avoir + de 10 produits !!`, data: result.data }
-    }
-    /* if (name === "Chips") {
-        let prod = products.find(element => element.name == name);
-        if ((prod.quantity + parseInt(qty)) > 100) {
-            return { error: true, message: `Produit : '${name}' déjà existant, ${qty}/100 éléments, quantité max !!`, data: result.data }
-        } else {
-            prod.quantity += parseInt(qty);
-            writeFile();
-            return { error: false, message: `Produit : '${name}' déjà existant, ${qty} item(s) ajouté(s). Quantité : ${qty}/100`, data: result.data }
-        }
+        retour.message = `La liste ne peut pas avoir + de 10 produits !!`;
+    } else if (!productsAuth.includes(name)) {
+        retour.message = `Attention mon médecin ne m'a pas autorisé à acheter ce produit`;
+    } else if (parseInt(qty) > 100) {
+        retour.message = `Erreur quantity : impossible d'ajouter autant de produits, 100 produits maximum`;
     } else {
-        return { error: true, message: `Sarah c'est pas bien`, data: ["https://product-esgi.herokuapp.com/products"] }
-    } */
+        /* Vérification que le produit est déjà présent dans la liste */
+        let prod = getByName(name);
+        if (prod.error) {
+            products.push(pdt);
+            retour.error = false;
+            retour.message = `Produit : '${name}' ajouté`;
+            retour.data = pdt;
+            writeFile();
+        } else {
+            if (prod.data.quantity + parseInt(qty) > 100) {
+                retour.message = `Erreur quantity : impossible d'ajouter ${qty} élément(s), la quantité que vous souhaitez ajouter est trop grande, ${prod.data.quantity}/100`;
+            } else {
+                if ((prod.data.quantity + parseInt(qty)) > 100) {
+                    retour.message = `Produit : '${name}' déjà existant, impossible d'ajouter les produits : ${prod.data.quantity}/100 éléments`;
+                    retour.data = prod;
+                } else {
+                    prod.data.quantity += parseInt(qty);
+                    retour.error = false;
+                    retour.message = `Produit : '${name}' déjà existant, ${qty} item(s) ajouté(s). Quantité : ${prod.data.quantity}/100`;
+                    retour.data = prod.data;
+                }
+                writeFile();
+            }
+        }
 
-    /* let data = JSON.stringify({
-        name: name,
-        quantity: 666
-    }) */
-    request.post(
+    }
+    /* request.post(
         'https://product-esgi.herokuapp.com/products',
         { json: { name: name, quantity: 666 } },
         function (error, response, body) {
@@ -45,37 +60,13 @@ const add = (name, qty) => {
                 console.log(body);
             }
         }
-    );
-    /* const options = {
-        hostname: 'https://product-esgi.herokuapp.com',
-        path: '/products',
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Content-Length': data.length
-        }
-    }
-
-    const req = https.request(options, (res) => {
-        console.log(`statusCode: ${res.statusCode}`)
-
-        res.on('data', (d) => {
-            process.stdout.write(d)
-        })
-    })
-
-    req.on('error', (error) => {
-        console.error(error)
-    })
-
-    req.write(data)
-    req.end() */
-    return { error: true, message: `Sarah c'est pas bien`, data: ["https://product-esgi.herokuapp.com/products"] }
+    ); */
     /* else {
-        products.push(pdt);
-        writeFile();
-        return { error: false, message: `Produit : '${name}' ajouté`, data: [] }
-    } */
+       products.push(pdt);
+       writeFile();
+       return { error: false, message: `Produit : '${name}' ajouté`, data: [] }
+   } */
+    return retour;
 }
 
 const getAll = () => {
@@ -84,13 +75,19 @@ const getAll = () => {
 
 const getByName = (name) => {
     let result = { error: true, message: `Produit : '${name}' inexistant`, data: [] };
-    products.forEach((elem) => {
-        if (elem.name == name) {
+    let prod = products.find(element => element.name == name);
+    if (prod) {
+        result.error = false;
+        result.message = `Produit : '${name}' existant`;
+        result.data = prod;
+    };
+    /* products.forEach((elem) => {
+        if (elem.name === name) {
             result.error = false;
             result.message = `Produit : '${name}' existant`;
             result.data = elem;
         }
-    });
+    }); */
     return result;
 }
 

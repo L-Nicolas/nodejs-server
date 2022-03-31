@@ -41,18 +41,18 @@ rootPdt.get('/products/:name', (req, res) => {
  * 
  * @returns {JSON}
  */
-rootPdt.post('/products/add', (req, res) => {
-    const { name, quantity } = req.body;
-    if (quantity > 10) {
-        res.status(400).send(`Quantité trop grande, veuillez rentrer une quantité inférieure à 10`);
+rootPdt.post('/products', (req, res) => {
+    /* const { name, quantity } = req.body;
+    let result = add(name, quantity);
+
+    if (!result.error) {
+        res.status(200).send(result);
     } else {
-        res.status(200).send(add(name, quantity));
-    }
+        res.status(404).send(result);
+    } */
 
-    console.log(req.body);
-
-    /* if (Object.keys(req.body).length === 0) {
-        return res.status(500).send({});
+    if (Object.keys(req.body).length === 0) {
+        res.status(500).send();
     } else {
         //vérification des champs
         let dataBody = ['name', 'quantity'];
@@ -70,13 +70,20 @@ rootPdt.post('/products/add', (req, res) => {
             }
         });
 
-        if (listError.length > 0) {
-            res.status(400).send({ error: true, message: "Erreur", data: [listError] });
-        }
 
-        let result = add(req.body.name, req.body.quantity);
-        res.status(200).send(result.message);
-    } */
+        if (listError.length > 0) {
+            res.status(400).json({ error: true, message: "Erreur", data: [listError] });
+        } else {
+            let { name, quantity } = req.body;
+            let result = add(name, quantity);
+
+            if (!result.error) {
+                res.status(200).send(result);
+            } else {
+                res.status(404).send(result);
+            }
+        }
+    }
 });
 
 /**
@@ -96,15 +103,5 @@ rootPdt.delete('/products/:name', (req, res) => {
 
     res.status(result.code).send(result);
 });
-
-/* Suppression d'une quantité de produit */
-/* rootPdt.update('/products/:name', (req, res) => {
-    const { name } = req.params;
-    const { quantity } = req.query;
-
-    let result = remove(name, quantity);
-
-    res.status(result.code).send(result);
-}); */
 
 export default rootPdt;
