@@ -3,6 +3,15 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "postinstall": "npm install --prefix server"
+    "postinstall": "npm install --prefix server",
+    "lint": "eslint **/*.mjs",
+    "lint:fix": "eslint --fix **/*.mjs"
+  },
+  "dependencies": {
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.12.0"
   }
 }
