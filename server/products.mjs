@@ -73,6 +73,13 @@ const getAll = () => {
     return products;
 }
 
+/**
+ * Récupération d'un produit selon son nom
+ * 
+ * @param {String} name 
+ * 
+ * @returns {JSON}
+ */
 const getByName = (name) => {
     let result = { error: true, message: `Produit : '${name}' inexistant`, data: [] };
     let prod = products.find(element => element.name == name);
@@ -81,29 +88,27 @@ const getByName = (name) => {
         result.message = `Produit : '${name}' existant`;
         result.data = prod;
     };
-    /* products.forEach((elem) => {
-        if (elem.name === name) {
-            result.error = false;
-            result.message = `Produit : '${name}' existant`;
-            result.data = elem;
-        }
-    }); */
     return result;
 }
 
+/**
+ * Mise à jour du nom ou d'une quantité d'un produit
+ * 
+ * @param {String} name 
+ * @param {Object} pdt 
+ * 
+ * @returns {JSON}
+ */
 const update = (name, pdt) => {
-    /* let result = getByName(pdt.name);
-
-    if (result.error === false) {
-        let prod = products.find(element => element.name == pdt.name);
-        if (prod) {
-            prod.name = name;
-            console.log(`Produit : '${pdt.name}' modifié en '${name}'`)
-        }
-    } else {
-        console.log(result.message);
-    } */
-    return { error: true, message: `Sarah c'est pas bien`, data: ["https://product-esgi.herokuapp.com/products"] }
+    let result = { error: true, message: `Produit : '${name}' inexistant`, data: [] };
+    let prod = products.find(element => element.name == pdt.name);
+    if (prod) {
+        prod.name = name;
+        result.error = false;
+        result.message = `Produit : '${pdt.name}' modifié en '${name}'`;
+        result.data = prod;
+    }
+    return result;
 }
 
 const remove = (name, qty) => {
