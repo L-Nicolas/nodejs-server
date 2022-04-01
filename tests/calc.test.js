@@ -5,5 +5,3 @@ describe("test des fonctions du fichier calc.js", () => {
     test("Soustraction de 5 - 2", () => expect(Substract(5, 2)).toEqual(3))
     test("Multiplication de 5 * 2", () => expect(Multiply(5, 2)).toEqual(10))
 });
-
-test("Récupération des produits", () => expect(Multiply(5, 2)).toEqual(10))

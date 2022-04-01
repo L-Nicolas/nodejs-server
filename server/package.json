@@ -5,7 +5,7 @@
   "main": "index.mjs",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "start": "node index.mjs",
     "dev": "nodemon index.mjs --ignore 'products.json'"
   },
@@ -13,6 +13,8 @@
   "author": "L-Nicolas <nicolas.lacoste.esgi@gmail.com>",
   "license": "ISC",
   "devDependencies": {
+    "@types/jest": "^27.4.1",
+    "jest": "^27.5.1",
     "nodemon": "^2.0.15"
   },
   "dependencies": {
