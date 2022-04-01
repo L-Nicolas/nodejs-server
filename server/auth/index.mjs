@@ -1,6 +1,23 @@
 import jwt from 'jsonwebtoken'
 import fs from 'fs'
 
+/* const WHITE_ROUTES = ['/auth']
+
+const authToken = (req, res, next) => {
+  if (WHITE_ROUTES.some((r) => r === req.url)) {
+    next()
+    return
+  }
+} */
+//@token = 'letoken retourné'
+//Authorization Bearer {{token}}
+
+/* const authHeader = req.headers('authorization')
+if (!authHeader) res.sendStatus(401) */
+
+/* const token = authHeader.split('')[1]
+if () */
+
 /**
  *
  * @param {Object} data
