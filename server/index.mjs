@@ -3,6 +3,9 @@ import express from 'express'
 import morgan from 'morgan'
 import swaggerUI from 'swagger-ui-express'
 import docs from './docs/index.mjs'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 const app = express()
 const HOST = process.env.HOST || 'http://localhost'

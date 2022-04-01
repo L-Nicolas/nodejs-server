@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import { add, getAll, remove, getByName } from './products.mjs'
+import { auth } from './auth/index.mjs'
 
 const rootPdt = Router()
 
@@ -103,6 +104,17 @@ rootPdt.delete('/products/:name', (req, res) => {
   let result = remove(name, quantity)
 
   res.status(result.code).send(result)
+})
+
+rootPdt.post('/auth', (req, res) => {
+  const { name, password } = req.body
+  let result = auth(name, password)
+
+  if (!result) {
+    res.status(400).send(result)
+  } else {
+    res.status(200).send(result)
+  }
 })
 
 export default rootPdt

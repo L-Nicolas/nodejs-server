@@ -1,0 +1,9 @@
+###
+# Add product
+POST http://127.0.0.1:3001/auth
+content-type: application/json
+
+{
+    "name": "Nicolas",
+    "password": "esgi"
+}
